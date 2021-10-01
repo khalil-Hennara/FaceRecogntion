@@ -1,3 +1,37 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import argparse
+import sys
+import os
+
+parser = argparse.ArgumentParser()
+parser.add_argument("data", help="The data folder where you save your picture want to proccess bay attintion you should but each collection of feature in the Folder and the folder name will be the label to those faces.")
+parser.add_argument("database",help="The folder where you want save the proccessing vector.")
+args=parser.parse_args()
+
+
+DATA_BASE=None
+FOLDER_NAME=None
+def usage():
+    print("""Error: you have to provide a valid path for data folder where we have and proccessing image and database folder where we save the embbeding vector.
+    """)
+
+if (not args.data) or (not args.database):
+      usage()
+      sys.exit()
+
+DATA_BASE=args.database
+FOLDER_NAME=args.data
+
+if not os.path.exists(DATA_BASE):
+   os.makdir(os.path.join(os.getcwd(),DATA_BASE))
+
+if not os.path.exists(FOLDER_NAME):
+   usage()
+   sys.exit()
+
+print("import model.....")
 from facenet_pytorch import MTCNN, InceptionResnetV1,extract_face
 import torch
 from torch.utils.data import DataLoader
@@ -39,7 +73,7 @@ def embedding_data(folder_name,output_folder):
     for x, y in loader:
         x_aligned, prob = mtcnn(x, return_prob=True)
         if x_aligned is not None:
-            print('Face detected with probability: {:8f}'.format(prob))
+            print('Face detected with probability: {:6f}'.format(prob))
             aligned.append(x_aligned)
             names.append(dataset.idx_to_class[y])
     if len(aligned)!=0:
@@ -53,4 +87,6 @@ def embedding_data(folder_name,output_folder):
     else:return 0
     
     
+if __name__=="__main__":
+     embedding_data(FOLDER_NAME,DATA_BASE)
 
