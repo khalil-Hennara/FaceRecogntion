@@ -42,7 +42,7 @@ import os
 import cv2 as cv
 import time
 import tqdm
-
+from collections import defaultdict
 
 
 
@@ -68,25 +68,37 @@ def embedding_data(folder_name,output_folder):
     loader = DataLoader(dataset, collate_fn=collate_fn)
 
     aligned = []
-    names = []
+    names = {}
     print("read image and Extract Faces.....")
     for x, y in loader:
         x_aligned, prob = mtcnn(x, return_prob=True)
         if x_aligned is not None:
             print('Face detected with probability: {:6f}'.format(prob))
             aligned.append(x_aligned)
-            names.append(dataset.idx_to_class[y])
+            index=len(aligned)-1
+            if dataset.idx_to_class[y] in names:
+                names[dataset.idx_to_class[y]].append(index)   
+            else:
+                names[dataset.idx_to_class[y]]=[index]
     if len(aligned)!=0:
        aligned = torch.stack(aligned).to(device)
        print("Encoding Face....")
        embeddings = resnet(aligned).detach().cpu()
-       avr=torch.sum(embeddings,axis=0)/len(embeddings)
-       torch.save(avr,"{}/{}.pkl".format(output_folder,names[0]))
+
+       for name,value in names.items():
+           print("Encoding {} Face...".format(name))
+           avr=torch.sum(torch.Tensor([embeddings[k].numpy() for k in value]),axis=0)/len(value)
+           torch.save(avr,"{}/{}.pkl".format(output_folder,name))
        return 1
        
     else:return 0
     
     
 if __name__=="__main__":
-     embedding_data(FOLDER_NAME,DATA_BASE)
+    if embedding_data(FOLDER_NAME,DATA_BASE):
+       print("Done")
+       sys.exit(0)
+    else:
+       print("Somthing Error")
+       sys.exit(1)
 
