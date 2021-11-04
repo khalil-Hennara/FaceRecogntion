@@ -2,7 +2,7 @@
 In this project I create  face recognition app where I can add,delete,edit faces in my database.
 I use pretrained FaceNet model to encoding face in vector of length 512.
 this Network is traning on alot of faces in such way, that can represent the face as embedding vector which represent the information of the face.
-I use pretrained model you can see the details on this repesotory link [FaceNet] (https://github.com/timesler/facenet-pytorch)
+I use pretrained model you can see the details on this repesotory link [FaceNet](https://github.com/timesler/facenet-pytorch)
 
 to train model to recognice faces or to repreent faces as vectors we can use two way the first one as DeepFace on this paper[DeepFace: Closing the Gap to Human-Level Performance in Face Verification](https://ieeexplore.ieee.org/document/6909616) the second one is the faceNet from this paper [FaceNet: A Unified Embedding for Face Recognition and Clustering](https://arxiv.org/abs/1503.03832)
 becouse I use the FaceNet I will explaie a litel.
