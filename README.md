@@ -86,8 +86,7 @@ $python face_recognition.py database videopath outputpath
 for testing, I use from 1-10 image for 11 actors from Money heist TV series to recognize them(Prof,Rio,Tokyo,Gundia,Bogota,Denver,Arturo,Nairobi,Monica,Helsinki,Berlin),embedding this image for each person in vectors and then take the average over this vector,creating one vector that represent one person.
 this Technique achieve a good accuracy as we can see in demo, and by using ecludian distance as metrics get the best results.
 in This app you can add face to the data or delete face without any retraining and also you can edit faces by adding more image to the training data.
-in this link we see another video where I add Lisbon
-
+in this link we see another video where I add Lisbon [Demo](https://drive.google.com/drive/folders/1EiqM6F8yARjt6dv8R9j1BWvrZzKMJ0Oy)
 
 ```python
 
